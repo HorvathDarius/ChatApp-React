@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import Add from '../img/addAvatar.png';
+import Google from '../img/google-icon.png';
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, db, storage } from '../firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate, Link } from 'react-router-dom';
+import GoogleIcon from '@mui/icons-material/Google';
 
 export const Register = () => {
   const [err, setErr] = useState(false);
@@ -78,6 +80,10 @@ export const Register = () => {
                     <span>Add an avatar</span>
                 </label>
                 <button>Sign up</button>
+                <button class="googleSignUp">
+                  <img src={Google} alt=""/>
+                  Sign up with Google
+                </button>
                 {err && <span>Something went wrong</span>}
             </form>
         <p>You already have an account? <Link to="/login">Login</Link></p>
