@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Add from '../img/addAvatar.png';
 import Google from '../img/google-icon.png';
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from "firebase/auth";
 import { auth, db, storage } from '../firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
@@ -56,42 +56,61 @@ export const Register = () => {
           });
         }
       );
-
-
     }catch(err){
       setErr(true);
     }
-      
   }
 
   const handleGoogleClick = (e) => {
     e.preventDefault();
-    alert("Sign up with Google");
+    const provider = new GoogleAuthProvider();
+
+    signInWithPopup(auth, provider).then(async (result) => {
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      const user = result.user;
+
+      try {
+        await setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL
+        });
+        await setDoc(doc(db, "userChats", user.uid), {});
+        navigate("/");
+      } catch (err) {
+        console.log(err);
+      }
+    }).catch((error) => {
+      const errorMessage = error.message;
+      console.log(errorMessage);
+    });
   }
 
   return (
     <div className="formContainer">
-        <div className="formWrapper">
+      <div className="formWrapper">
         <span className="logo">Lama chat</span>
         <span className="title">Register</span>
-            <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="display name" />
-                <input type="email" placeholder="email" />
-                <input type="password" placeholder="password" />
-                <input style={{display:"none"}} type="file" id="file"/>
-                <label htmlFor="file">
-                    <img src={Add} alt=""/>
-                    <span>Add an avatar</span>
-                </label>
-                <button>Sign up</button>
-                <button class="googleSignUp" onClick={handleGoogleClick}>
-                  <img src={Google} alt=""/>
-                  Sign up with Google
-                </button>
-                {err && <span>Something went wrong</span>}
-            </form>
+          <form onSubmit={handleSubmit}>
+              <input type="text" placeholder="display name" />
+              <input type="email" placeholder="email" />
+              <input type="password" placeholder="password" />
+              <input style={{display:"none"}} type="file" id="file"/>
+              <label htmlFor="file">
+                  <img src={Add} alt=""/>
+                  <span>Add an avatar</span>
+              </label>
+              <button>Sign up</button>
+              <button className="googleSignUp" onClick={handleGoogleClick}>
+                <img src={Google} alt=""/>
+                Sign up with Google
+              </button>
+              {err && <span>Something went wrong</span>}
+          </form>
         <p>You already have an account? <Link to="/login">Login</Link></p>
-        </div>
+      </div>
     </div>
   )
 }
