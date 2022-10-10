@@ -6,7 +6,6 @@ import { auth, db, storage } from '../firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate, Link } from 'react-router-dom';
-import GoogleIcon from '@mui/icons-material/Google';
 
 export const Register = () => {
   const [err, setErr] = useState(false);
@@ -65,6 +64,11 @@ export const Register = () => {
       
   }
 
+  const handleGoogleClick = (e) => {
+    e.preventDefault();
+    alert("Sign up with Google");
+  }
+
   return (
     <div className="formContainer">
         <div className="formWrapper">
@@ -80,7 +84,7 @@ export const Register = () => {
                     <span>Add an avatar</span>
                 </label>
                 <button>Sign up</button>
-                <button class="googleSignUp">
+                <button class="googleSignUp" onClick={handleGoogleClick}>
                   <img src={Google} alt=""/>
                   Sign up with Google
                 </button>
