@@ -47,6 +47,9 @@
                 font-weight: bold;
                 border: none;
                 cursor: pointer;
+                &:hover {
+                    background-color: #2f4caa;
+                }
             }
 
             .googleSignUp{
@@ -56,8 +59,11 @@
                 justify-content: center;
 
                 img{
-                    width: 30px;
-                    padding-right: 20px;
+                    width: 20px;
+                    padding-right: 10px;
+                }
+                &:hover{
+                    background-color: rgb(126, 15, 15);
                 }
             }
 
