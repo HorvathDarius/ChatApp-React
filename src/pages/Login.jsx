@@ -3,11 +3,12 @@ import { useNavigate, Link } from 'react-router-dom';
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import Google from '../img/google-icon.png';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 export const Login = () => {
 
     const [err, setErr] = useState(false);
+    const [notCreated, setNotCreated] = useState(false);
     // Using the navigate hook to use navigation on the web
     const navigate = useNavigate();
 
@@ -32,17 +33,13 @@ export const Login = () => {
         signInWithPopup(auth, provider).then(async (result) => {
             const user = result.user;
 
-            try {
-                await setDoc(doc(db, "users", user.uid), {
-                    uid: user.uid,
-                    displayName: user.displayName,
-                    email: user.email,
-                    photoURL: user.photoURL
-                });
-                await setDoc(doc(db, "userChats", user.uid), {});
+            const docRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(docRef);
+
+            if(docSnap.data()){
                 navigate("/");
-            } catch (err) {
-                console.log(err);
+            }else{
+                setNotCreated(true);
             }
         }).catch((error) => {
             const errorMessage = error.message;
@@ -63,7 +60,8 @@ export const Login = () => {
                         <img src={Google} alt="" />
                         Log in with Google
                     </button>
-                    {err && <span>Something went wrong</span>}
+                    {err && <span className="errorSpan">Something went wrong</span>}
+                    {notCreated && <span className="errorSpan">User doesn't exists. Please Register</span>}
                 </form>
                 <p>You don't have an account? <Link to="/register">Register</Link></p>
             </div>

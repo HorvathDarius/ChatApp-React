@@ -4,13 +4,14 @@ import Google from '../img/google-icon.png';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from "firebase/auth";
 import { auth, db, storage } from '../firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { useNavigate, Link } from 'react-router-dom';
 
 export const Register = () => {
   const [err, setErr] = useState(false);
   // Using the navigate hook to use navigation on the web
   const navigate = useNavigate();
+  const [userExists, setUserExists] = useState(false);
 
   // On submit this function is called
   const handleSubmit = async (e) => {
@@ -66,21 +67,28 @@ export const Register = () => {
     const provider = new GoogleAuthProvider();
 
     signInWithPopup(auth, provider).then(async (result) => {
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
       const user = result.user;
 
-      try {
-        await setDoc(doc(db, "users", user.uid), {
-          uid: user.uid,
-          displayName: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL
-        });
-        await setDoc(doc(db, "userChats", user.uid), {});
-        navigate("/");
-      } catch (err) {
-        console.log(err);
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if(docSnap.data()){
+        if (docSnap.data().uid === user.uid) {
+          setUserExists(true);
+        }
+      }else{
+        try {
+          await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL
+          });
+          await setDoc(doc(db, "userChats", user.uid), {});
+          navigate("/");
+        } catch (err) {
+          console.log(err);
+        }
       }
     }).catch((error) => {
       const errorMessage = error.message;
@@ -107,7 +115,8 @@ export const Register = () => {
                 <img src={Google} alt=""/>
                 Sign up with Google
               </button>
-              {err && <span>Something went wrong</span>}
+              {err && <span className="errorSpan">Something went wrong</span>}
+              {userExists && <span className="errorSpan">User already exists. Please Log in</span>}
           </form>
         <p>You already have an account? <Link to="/login">Login</Link></p>
       </div>

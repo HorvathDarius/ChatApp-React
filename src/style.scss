@@ -85,6 +85,15 @@
             font-style: 12px;
             margin-top: 10px;
         }
+
+        .errorSpan{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(235, 94, 94);
+            border: 1px solid red;
+            border-radius: 10px;
+        }
     }
 }
 
