@@ -107,13 +107,13 @@
     .container{
         border: 1px solid white;
         border-radius: 10px;
-        width: 65%;
+        width: 80%;
         height: 80%;
         display: flex;
         overflow: hidden;
 
         .sidebar{
-            flex: 1;
+            flex: 2;
             background-color: #3e3c61;
 
             .navbar{
@@ -205,7 +205,7 @@
         }
 
         .chat{
-            flex: 2;
+            flex: 4;
 
             .chatInfo{
                 height: 50px;
@@ -224,6 +224,43 @@
                 img{
                     height: 24px;
                     cursor: pointer;
+                }
+
+                .hiddenMenu{
+                    background-color: rgba(93,93,141);
+                    border: 1px solid #3e3c61;
+                    border-radius: 0 0 5px 5px;
+                    width: 100px;
+                    height: 100px;
+                    position:fixed;
+                    transform: translate(0, 46px);
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+
+                    button{
+                        border: none;
+                        background-color:#7b96ec;
+                        color: #3e3c61;
+                        width: 80%;
+
+                        &:hover{
+                            background-color: #a7bcff;
+                            color: white;
+                        }
+                    }
+
+                    animation-name: dropDownMenu;
+                    animation-duration: 0.5s;
+                    @keyframes dropDownMenu {
+                        0% {
+                            height: 0;
+                        }
+                        100% {
+                            height: 100px;
+                        }
+                    }
                 }
             }
 
