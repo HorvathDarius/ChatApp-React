@@ -52,6 +52,8 @@ export const Login = () => {
             <div className="formWrapper">
                 <span className="logo">Lama chat</span>
                 <span className="title">Login</span>
+                {err && <span className="errorSpan">Something went wrong</span>}
+                {notCreated && <span className="errorSpan">User doesn't exists. Please Register</span>}
                 <form onSubmit={handleSubmit}>
                     <input type="email" placeholder="email" />
                     <input type="password" placeholder="password" />
@@ -60,8 +62,6 @@ export const Login = () => {
                         <img src={Google} alt="" />
                         Log in with Google
                     </button>
-                    {err && <span className="errorSpan">Something went wrong</span>}
-                    {notCreated && <span className="errorSpan">User doesn't exists. Please Register</span>}
                 </form>
                 <p>You don't have an account? <Link to="/register">Register</Link></p>
             </div>

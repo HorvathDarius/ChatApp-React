@@ -101,6 +101,8 @@ export const Register = () => {
       <div className="formWrapper">
         <span className="logo">Lama chat</span>
         <span className="title">Register</span>
+          {err && <span className="errorSpan">Something went wrong</span>}
+          {userExists && <span className="errorSpan">User already exists. Please Log in</span>}
           <form onSubmit={handleSubmit}>
               <input type="text" placeholder="display name" />
               <input type="email" placeholder="email" />
@@ -115,8 +117,6 @@ export const Register = () => {
                 <img src={Google} alt=""/>
                 Sign up with Google
               </button>
-              {err && <span className="errorSpan">Something went wrong</span>}
-              {userExists && <span className="errorSpan">User already exists. Please Log in</span>}
           </form>
         <p>You already have an account? <Link to="/login">Login</Link></p>
       </div>
