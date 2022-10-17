@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
+import Attach from "../img/attach.png";
 
 const Message = ({ message }) => {
   const { currentUser } = useContext(AuthContext);
@@ -22,8 +23,13 @@ const Message = ({ message }) => {
         <span>just now</span>
       </div>
       <div className="messageContent">
-        <p>{message.text}</p>
-        {message.img && <img src={message.img} alt="" />}
+        <p>
+          {message.text}
+          {message.img && <img src={message.img} alt="" />}
+          {message.file && 
+            <a href={message.file} download target="blank"><img className="downFile" src={Attach} alt=""/></a>
+          }
+        </p>
       </div>
     </div>
   );
