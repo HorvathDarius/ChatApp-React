@@ -42,32 +42,34 @@ const Input = () => {
         }
       );
     } else {
-      await updateDoc(doc(db, "chats", data.chatId), {
-        messages: arrayUnion({
-          id: uuid(),
+      if(text !== ""){
+        await updateDoc(doc(db, "chats", data.chatId), {
+          messages: arrayUnion({
+            id: uuid(),
+            text,
+            senderId: currentUser.uid,
+            date: Timestamp.now(),
+          }),
+        });
+      }
+
+      await updateDoc(doc(db, "userChats", currentUser.uid), {
+        [data.chatId + ".lastMessage"]: {
           text,
-          senderId: currentUser.uid,
-          date: Timestamp.now(),
-        }),
+        },
+        [data.chatId + ".date"]: serverTimestamp(),
       });
-    }
 
-    await updateDoc(doc(db, "userChats", currentUser.uid), {
-      [data.chatId + ".lastMessage"]: {
-        text,
-      },
-      [data.chatId + ".date"]: serverTimestamp(),
-    });
+      await updateDoc(doc(db, "userChats", data.user.uid), {
+        [data.chatId + ".lastMessage"]: {
+          text,
+        },
+        [data.chatId + ".date"]: serverTimestamp(),
+      });
 
-    await updateDoc(doc(db, "userChats", data.user.uid), {
-      [data.chatId + ".lastMessage"]: {
-        text,
-      },
-      [data.chatId + ".date"]: serverTimestamp(),
-    });
-
-    setText("");
-    setImg(null);
+      setText("");
+      setImg(null);
+    }  
   };
   return (
     <div className="input">
@@ -78,14 +80,23 @@ const Input = () => {
         value={text}
       />
       <div className="send">
-        <img src={Attach} alt="" />
+        <input 
+          type="file"
+          style={{ display: "none"}}
+          id="file"
+          // onChange={(e) => setFile(e.target.files[0])}
+        />
+        <label htmlFor="file">
+          <img src={Attach} alt="" />
+        </label>
         <input
           type="file"
           style={{ display: "none" }}
-          id="file"
+          id="image"
           onChange={(e) => setImg(e.target.files[0])}
+          accept="image/*"
         />
-        <label htmlFor="file">
+        <label htmlFor="image">
           <img src={Img} alt="" />
         </label>
         <button onClick={handleSend}>Send</button>
