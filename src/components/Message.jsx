@@ -13,6 +13,13 @@ const Message = ({ message }) => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
 
+  const convertToTime = (d) => {
+    let hours = d.getHours();
+    let minutes = d.getMinutes();
+    let time = hours + ":" + minutes;
+    return time;
+  }
+
   return (
     <div
       ref={ref}
@@ -20,10 +27,11 @@ const Message = ({ message }) => {
     >
       <div className="messageInfo">
         <img src={message.senderId === currentUser.uid ? currentUser.photoURL : data.user.photoURL } alt="" />
-        <span>just now</span>
+        <span>{convertToTime(message.date.toDate())}</span>
       </div>
       <div className="messageContent">
         <p>
+          
           {message.text}
           {message.img && <img src={message.img} alt="" />}
           {message.file && 

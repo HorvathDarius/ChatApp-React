@@ -227,8 +227,8 @@
                 }
 
                 .hiddenMenu{
-                    background-color: rgba(93,93,141);
-                    border: 1px solid #3e3c61;
+                    background-color: #a3a3cd;
+                    border: 1px solid #6662ad;
                     border-radius: 0 0 5px 5px;
                     width: 100px;
                     height: 100px;
@@ -252,7 +252,7 @@
                     }
 
                     animation-name: dropDownMenu;
-                    animation-duration: 0.5s;
+                    animation-duration: 0.2s;
                     @keyframes dropDownMenu {
                         0% {
                             height: 0;
