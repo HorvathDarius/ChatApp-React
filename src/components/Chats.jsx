@@ -28,6 +28,21 @@ const Chats = () => {
     dispatch({ type: "CHANGE_USER", payload: u });
   };
 
+  // const convertToTime = (d) => {
+  //   const currentDate = new Date();
+  //   if (d.getDate() < currentDate.getDate()) {
+  //     let day = d.getDate();
+  //     let month = d.getMonth();
+  //     let date = day + "." + month;
+  //     return date;
+  //   } else {
+  //     let hours = d.getHours();
+  //     let minutes = d.getMinutes();
+  //     let time = hours + ":" + minutes;
+  //     return time;
+  //   }
+  // }
+
   return (
     <div className="chats">
       {Object.entries(chats)?.sort((a, b) => b[1].date - a[1].date).map((chat) => (
@@ -39,7 +54,10 @@ const Chats = () => {
           <img src={chat[1].userInfo.photoURL} alt="" />
           <div className="userChatInfo">
             <span>{chat[1].userInfo.displayName}</span>
-            <p>{chat[1].lastMessage?.text}</p>
+            <div>
+              <p>{chat[1].lastMessage?.text}</p>
+              {/* <span className="sendingTime">{convertToTime(chat[1].date.toDate())}</span> */}
+            </div>
           </div>
         </div>
       ))}

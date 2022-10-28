@@ -13,11 +13,32 @@ const Message = ({ message }) => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
 
+  const getDay = (day) => {
+    switch(day){
+      case 0: return "Sunday";
+      case 1: return "Monday";
+      case 2: return "Tuesday";
+      case 3: return "Wednesday";
+      case 4: return "Thursday";
+      case 5: return "Friday";
+      case 6: return "Saturday";
+    }
+  }
+
   const convertToTime = (d) => {
-    let hours = d.getHours();
-    let minutes = d.getMinutes();
-    let time = hours + ":" + minutes;
-    return time;
+    const currentDate = new Date();
+    if(d.getDate() < currentDate.getDate()){
+      let weekday = getDay(d.getDay());
+      let day = d.getDate();
+      let month = d.getMonth();
+      let date = weekday + " " + day+"."+month;
+      return date;
+    }else{
+      let hours = d.getHours();
+      let minutes = d.getMinutes();
+      let time = hours + ":" + minutes;
+      return time;
+    }
   }
 
   return (
@@ -31,7 +52,6 @@ const Message = ({ message }) => {
       </div>
       <div className="messageContent">
         <p>
-          
           {message.text}
           {message.img && <img src={message.img} alt="" />}
           {message.file && 
