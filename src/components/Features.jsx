@@ -1,15 +1,20 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Cam from "../img/cam.png";
 import Add from "../img/add.png";
 import More from "../img/more.png"; 
 import { ChatContext } from "../context/ChatContext";
 import { signOut } from 'firebase/auth';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { AuthContext } from '../context/AuthContext';
 
 const Features = () => {
   const { data } = useContext(ChatContext);
   const [showMenu, setShowMenu] = useState(false);
   const [showFriendsMenu, setShowFriendsMenu] = useState(false);
+  const [userData, setUserData] = useState({});
+  const { currentUser } = useContext(AuthContext);
+  let randArray = [];
 
   const handleSettingsClick = () => {
     if(showMenu === false) setShowMenu(true);
@@ -20,14 +25,26 @@ const Features = () => {
     alert("Feature not yet implemented.");
   }
 
-  const handleInviteFriendsClick = () => {
-    // alert("Can't invite friends yet.");
+  useEffect(() => {
+    const getData = async() => {
+      const querySnapshot = await getDocs(collection(db, "users"));
+      setUserData(querySnapshot);
+    }
+    getData();
+  }, [showFriendsMenu])
+
+  const handleInviteFriendsClick = async () => {
     if(!showFriendsMenu){
       setShowFriendsMenu(true);
     }else{
       setShowFriendsMenu(false);
     }
+  }
 
+  const checkIfSameUser= (doc) =>{
+    if(currentUser.uid !== doc.data().uid){
+      return true;
+    }
   }
 
   return (
@@ -43,55 +60,22 @@ const Features = () => {
       </div>
       {showFriendsMenu && 
       <div className="friendsMenu">
-        <div className="user">
-          <div className="userInfo">
-            <div className="profilePic"></div>
-            <span>Bob Ross</span>
+        {userData.forEach(doc => {
+          if (checkIfSameUser(doc)){
+            randArray.push(doc);
+          }
+        })}
+        {randArray.map(doc =>{
+          return(
+          <div className="user" key={doc.data().uid}>
+            <div className="userInfo">
+              <img src={doc.data().photoURL} alt="" />
+              <span>{doc.data().displayName}</span>
+            </div>
+            <button>Add Friend</button>
           </div>
-          <button>Add Friend</button>
-        </div>
-        <div className="user">
-          <div className="userInfo">
-            <div className="profilePic"></div>
-            <span>Bob Ross</span>
-          </div>
-          <button>Add Friend</button>
-        </div>
-        <div className="user">
-          <div className="userInfo">
-            <div className="profilePic"></div>
-            <span>Bob Ross</span>
-          </div>
-          <button>Add Friend</button>
-        </div>
-        <div className="user">
-          <div className="userInfo">
-            <div className="profilePic"></div>
-            <span>Bob Ross</span>
-          </div>
-          <button>Add Friend</button>
-        </div>
-        <div className="user">
-          <div className="userInfo">
-            <div className="profilePic"></div>
-            <span>Bob Ross</span>
-          </div>
-          <button>Add Friend</button>
-        </div>
-        <div className="user">
-          <div className="userInfo">
-            <div className="profilePic"></div>
-            <span>Bob Ross</span>
-          </div>
-          <button>Add Friend</button>
-        </div>
-        <div className="user">
-          <div className="userInfo">
-            <div className="profilePic"></div>
-            <span>Bob Ross</span>
-          </div>
-          <button>Add Friend</button>
-        </div>
+          )
+        })}
       </div>}
   </div>
   )
