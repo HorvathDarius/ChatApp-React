@@ -220,6 +220,7 @@
 
         .chat{
             flex: 4;
+            position: relative;
 
             .chatInfo{
                 height: 50px;
@@ -241,39 +242,74 @@
                 }
 
                 .hiddenMenu{
-                    background-color: #a3a3cd;
-                    border: 1px solid #6662ad;
-                    border-radius: 0 0 5px 5px;
-                    width: 100px;
-                    height: 100px;
-                    position:fixed;
-                    transform: translate(0, 46px);
                     display: flex;
+                    background-color: #a7bcff;
+                    border: none;
+                    border-radius: 10px;
+                    width: 20%;
+                    height: 30%;
+                    position:absolute;
+                    // transform: translate(0, 46px);
+                    top: 8%;
+                    right: 15px;
                     flex-direction: column;
                     align-items: center;
-                    justify-content: center;
 
                     button{
+                        margin: 10px;
+                        padding: 5px;
                         border: none;
                         background-color:#7b96ec;
                         color: #3e3c61;
                         width: 80%;
+                        border-radius: 5px;
+                        cursor: pointer;
+                    }
+                }
+            }
 
-                        &:hover{
-                            background-color: #a7bcff;
+            .friendsMenu{
+                background-color: #a7bcff;
+                width: 60%;
+                height: 90%;
+                position: absolute;
+                top: 5%;
+                left: 20%;
+                border-radius: 10px;
+                overflow: scroll;
+
+                .user{
+                    display: flex;
+                    background-color:#6662ad;
+                    padding: 20px;
+                    margin: 10px;
+                    border-radius: 5px;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    .userInfo{
+                        display: flex;
+                        gap: 20px;
+                        align-items: center;
+
+                        .profilePic{
+                            background-color: white;
+                            border-radius: 50%;
+                            width: 30px;
+                            height: 30px;
+                        }
+                        span{
                             color: white;
+                            font-size: 16px;
                         }
                     }
 
-                    animation-name: dropDownMenu;
-                    animation-duration: 0.2s;
-                    @keyframes dropDownMenu {
-                        0% {
-                            height: 0;
-                        }
-                        100% {
-                            height: 100px;
-                        }
+                    button{
+                        border: none;
+                        width: 30%;
+                        background-color: white;
+                        border-radius: 10px;
+                        cursor: pointer;
                     }
                 }
             }

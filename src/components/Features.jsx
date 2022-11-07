@@ -8,7 +8,8 @@ import { auth } from '../firebase';
 
 const Features = () => {
   const { data } = useContext(ChatContext);
-  const [showMenu, setShowMenu] = useState(false)
+  const [showMenu, setShowMenu] = useState(false);
+  const [showFriendsMenu, setShowFriendsMenu] = useState(false);
 
   const handleSettingsClick = () => {
     if(showMenu === false) setShowMenu(true);
@@ -20,7 +21,13 @@ const Features = () => {
   }
 
   const handleInviteFriendsClick = () => {
-    alert("Can't invite friends yet.");
+    // alert("Can't invite friends yet.");
+    if(!showFriendsMenu){
+      setShowFriendsMenu(true);
+    }else{
+      setShowFriendsMenu(false);
+    }
+
   }
 
   return (
@@ -34,6 +41,58 @@ const Features = () => {
             <button onClick={() => { signOut(auth) }}>Logout</button>
           </div>}
       </div>
+      {showFriendsMenu && 
+      <div className="friendsMenu">
+        <div className="user">
+          <div className="userInfo">
+            <div className="profilePic"></div>
+            <span>Bob Ross</span>
+          </div>
+          <button>Add Friend</button>
+        </div>
+        <div className="user">
+          <div className="userInfo">
+            <div className="profilePic"></div>
+            <span>Bob Ross</span>
+          </div>
+          <button>Add Friend</button>
+        </div>
+        <div className="user">
+          <div className="userInfo">
+            <div className="profilePic"></div>
+            <span>Bob Ross</span>
+          </div>
+          <button>Add Friend</button>
+        </div>
+        <div className="user">
+          <div className="userInfo">
+            <div className="profilePic"></div>
+            <span>Bob Ross</span>
+          </div>
+          <button>Add Friend</button>
+        </div>
+        <div className="user">
+          <div className="userInfo">
+            <div className="profilePic"></div>
+            <span>Bob Ross</span>
+          </div>
+          <button>Add Friend</button>
+        </div>
+        <div className="user">
+          <div className="userInfo">
+            <div className="profilePic"></div>
+            <span>Bob Ross</span>
+          </div>
+          <button>Add Friend</button>
+        </div>
+        <div className="user">
+          <div className="userInfo">
+            <div className="profilePic"></div>
+            <span>Bob Ross</span>
+          </div>
+          <button>Add Friend</button>
+        </div>
+      </div>}
   </div>
   )
 }
